@@ -2,6 +2,7 @@ package com.juandi.batallaconocimiento;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -14,7 +15,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 public class MainActivity extends AppCompatActivity {
     EditText Codigo,Titulo,Ano,Url;
-    TextInputEditText Descripcion;
+    EditText Descripcion;
     Button COnsultar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         Titulo = (EditText) findViewById(R.id.idTitulo);
         Ano = (EditText) findViewById(R.id.idAno);
         Url = (EditText) findViewById(R.id.idUrl);
-        Descripcion = (TextInputEditText) findViewById(R.id.idDescripcion);
+        Descripcion = (EditText) findViewById(R.id.idDescripcion);
         COnsultar = (Button)findViewById(R.id.idConsultar);
 
 
@@ -46,7 +47,14 @@ public class MainActivity extends AppCompatActivity {
         String ano = Ano.getText().toString();
         String url = Url.getText().toString();
         String descri = Descripcion.getText().toString();
-        bd.execSQL("insert into articulos (codigo,titulo,año,url,descripcion) values ("+cod+",'"+titulo+"',"+ano+","+url+","+url+")");
+       // bd.execSQL("insert into articulos (codigo,titulo,año,url,descripcion) values ("+cod+",'"+titulo+"','"+ano+"','"+url+"','"+descri+"')");
+        ContentValues registro = new ContentValues();
+        registro.put("codigo",cod);
+        registro.put("titulo",titulo);
+        registro.put("año",ano);
+        registro.put("url",url);
+        registro.put("descripcion",descri);
+        bd.insert("articulos",null,registro);
         bd.close();
         Codigo.setText("");
         Titulo.setText("");

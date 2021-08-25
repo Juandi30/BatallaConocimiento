@@ -30,36 +30,38 @@ public class ConsultarPelicula extends AppCompatActivity {
         Imagen = (ImageView) findViewById(R.id.idImagen);
         descripcion = (TextView) findViewById(R.id.idDescripcionT);
         regresar = (Button) findViewById(R.id.idRegresar);
-        consultapornombre();
         regresar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
     }
 
-    public void consultapornombre() {
+    public void consultaporcodigo(View v) {
         AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this,
                 "administracion", null, 1);
         SQLiteDatabase bd = admin.getReadableDatabase();
         String nombre = Nombre.getText().toString();
-        Cursor fila = bd.rawQuery(
-                "select ano,url,descripcion from articulos where titulo like '" + nombre + "'", null);
-        if (!nombre.isEmpty()) {
-            if (fila.moveToFirst()) {
 
-                Toast.makeText(this, "Consultando Nombre ...",
-                        Toast.LENGTH_SHORT).show();
-                ano.setText(fila.getString(0));
-                descripcion.setText(fila.getString(2));
-                Picasso.get().load(fila.getString(1)).into(Imagen);
-            }else
-                Toast.makeText(this, "No existe Pelicula",
-                        Toast.LENGTH_SHORT).show();
-        }
+
+        Cursor fila = bd.rawQuery(
+                "select año,url,descripcion from articulos where titulo like '" + nombre + "'", null);
+
+        if (fila.moveToFirst()) {
+
+            Toast.makeText(this, "Consultando Nombre ...",
+                    Toast.LENGTH_SHORT).show();
+            ano.setText(fila.getString(0));
+            descripcion.setText(fila.getString(2));
+            Picasso.get().load(fila.getString(1)).into(Imagen);
+
+        } else
+            Toast.makeText(this, "No existe Pelicula",
+                    Toast.LENGTH_SHORT).show();
         bd.close();
+
     }
 }
